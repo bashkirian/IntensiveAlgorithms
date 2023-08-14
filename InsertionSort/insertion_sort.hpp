@@ -12,6 +12,40 @@ struct ListNode {
 };
 
 class Solution {
-public:
-  ListNode *insertionSortList(ListNode *head) {}
+  ListNode *insertionSortList(ListNode *head) {
+    ListNode *newHead = NULL;
+    // итерируемся по начальному листу
+    while (head) {
+      // создаем новую ноду из текущей ноды
+      ListNode *temp = head;
+      head = head->next;
+      temp->next = NULL;
+
+      // задаем начальную ноду
+      if (newHead == NULL)
+        newHead = temp;
+      // если больше, то просто добавляем в конец
+      else if (newHead->val >= temp->val) {
+        temp->next = newHead;
+        newHead = temp;
+      }
+      // иначе итерируемся пока не найдем, куда вставить
+      else {
+        ListNode *root = newHead;
+        {
+          while (root->next) {
+            if (temp->val > root->val and temp->val <= root->next->val) {
+              temp->next = root->next;
+              root->next = temp;
+              break;
+            }
+            root = root->next;
+          }
+          if (root->next == NULL)
+            root->next = temp;
+        }
+      }
+    }
+    return newHead;
+  }
 };
